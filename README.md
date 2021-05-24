@@ -11,7 +11,7 @@ Example :-
 ```python
 from playmedia import *
 
-play_single("C:\\\Users\\\Satvik\\\Music\\\Why do I.mp3")
+play_single("C:\\Users\\Satvik\\Music\\Why do I.mp3")
 print("This is printed as soon as play_single() is called. It does not wait for song to finish")
 
 #Output :

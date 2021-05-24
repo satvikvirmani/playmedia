@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="playmedia",
-    version="0.0.2",
+    version="0.0.3",
     author="Satvik Virmani",
     author_email="virmanisatvik01@gmail.com",
     description="A python package to play and control media files",
@@ -21,7 +21,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
+    packages=["playmedia"],
     python_requires=">=3.0",
     install_requires=[
         'python-vlc'
