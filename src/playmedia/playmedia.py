@@ -7,9 +7,9 @@ single_instance = None
 multiple_instance = None
 
 class SinglePlayer:
-    def __init__(self, file):
+    def __init__(self, file, vol):
         self.player = vlc.MediaPlayer()
-        self.player.audio_set_volume(100)
+        self.player.audio_set_volume(vol)
         self.media = vlc.Media(file)
         self.skip = False
 
@@ -27,10 +27,10 @@ class SinglePlayer:
         self.player.play()
 
 class MultiplePlayer:
-    def __init__(self, path, shuffle):
+    def __init__(self, path, vol, shuffle):
         self.player = vlc.MediaListPlayer()
         self.list = vlc.MediaList()
-        self.player.get_media_player().audio_set_volume(100)
+        self.player.get_media_player().audio_set_volume(vol)
         self.path = path
         self.shuffle = shuffle
 
@@ -68,16 +68,16 @@ class MultiplePlayer:
         self.player.set_media_list(self.list)
         self.player.play()
 
-def play_flow_multiple(path, shuffle):
+def play_flow_multiple(path, vol, shuffle):
     global multiple_instance
-    multiple_instance = MultiplePlayer(path, shuffle)
+    multiple_instance = MultiplePlayer(path, vol, shuffle)
     multiple_instance.start_playing()
     global stopped_multiple
     while True:
         if stopped_multiple:
             break
-def play_multiple(path,shuffle=False):
-    thread_a = Thread(target=play_flow_multiple, args=(path,shuffle))
+def play_multiple(path,vol,shuffle=False):
+    thread_a = Thread(target=play_flow_multiple, args=(path,vol,shuffle))
     thread_a.start()
 def pause_multiple():
     global multiple_instance
@@ -97,16 +97,16 @@ def previous_multiple():
     global multiple_instance
     multiple_instance.previous()
 
-def play_flow_single(url, bugFix):
+def play_flow_single(url, vol, bugFix):
     global single_instance
-    single_instance = SinglePlayer(url)
+    single_instance = SinglePlayer(url, vol)
     single_instance.start_playing()
     global stopped_single
     while True:
         if stopped_single:
             break
-def play_single(url, bugFix=False):
-    thread_b = Thread(target=play_flow_single, args=(url, bugFix))
+def play_single(url, vol, bugFix=False):
+    thread_b = Thread(target=play_flow_single, args=(url, vol, bugFix))
     thread_b.start()
 def pause_single():
     global single_instance
