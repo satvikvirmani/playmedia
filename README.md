@@ -1,107 +1,177 @@
-# playmedia
+<p align="center">
+    <h1 align="center">playmedia</h1>
+</p>
 
-## Install
-`pip install playmedia`
+> ### A python module to play and control media files.
 
-------------
+<p align="center">
+    <a href="">
+        <img src="https://img.shields.io/badge/Made%20by%20Satvik%20Virmani-000000?style=for-the-badge">
+    </a>
+</p>
 
-**playmedia** python package helps you easily play and control media files. It uses multithreading technology ( playback run in a different thread ). It means after calling `play_single( filepath )` or `play_multiple( directoryPath, shuffle )` execution of program does not stop.
+<p align="center">
+  <img src="https://img.shields.io/github/license/satvikvirmani/playmedia?color=000000&logoColor=000000&style=for-the-badge">
+  <img src="https://img.shields.io/github/issues/satvikvirmani/playmedia?color=000000&logoColor=000000&style=for-the-badge">
+  <img src="https://img.shields.io/github/last-commit/satvikvirmani/playmedia?color=000000&logoColor=000000&style=for-the-badge">
+</p>
 
-Example :-
+## Installation
+
 ```python
-from playmedia import *
-
-play_single("C:\\Users\\Satvik\\Music\\Why do I.mp3")
-print("This is printed as soon as play_single() is called. It does not wait for song to finish")
-
-#Output :
-This is printed as soon as play_single() is called. It does not wait for song to finish
-```
-It supports almost all popular formats :-
-- .m4a
-- .flac
-- .mp3
-- .mp4
-- .wav
-- .wma
-- .aac
-- .mkv
-
-It has 2 major functions :-
-1. play_single()
-2. play_multiple()
-
-------------
-
-### 1. play_single( filepath )
-`play_single( filepath )`
-- filepath ->full path of loaction of media eg.(**"C:\\\Users\\\Satvik\\\Music\\\Why do I.mp3"**). Double backslash( \\\ ) should be used as using others might throw unicode error.
-
-It has 3 method inside it.
-- `pause_single()` - Pauses the song. (calling `pause_single()` again resumes it)
-
-- `set_volume_single(vol)` - Sets the volume of player to vol%. Eg. `set_volume_single(60)` sets volume to 60%
-
-- `stop_single()` - Stops playing . Only it should be called to stop playing. Using other techniques might stop playing but not stop the thread
-
-Example Usage :-
-```python
-from playmedia import *
-
-play_single("C:\\Users\\Satvik\\Music\\Why do I.mp3")
-#playing started
-pause_single()
-#pauses
-pause_single()
-#calling  pause_single() again resumes the song
-set_volume_single(60)
-#sets volume to 60%
-stop_single()
-#stops playing the song
-
+pip install playmedia
 ```
 
-------------
+## Dependencies
 
-### 2. play_multiple( directoryPath, shuffle )
-`play_multiple( directoryPath, shuffle )`
-- directoryPath ->full path of directory containing multiple media eg.(**"C:\\\Users\\\Satvik\\\Music\\\"**). Double backslash( \\\ ) should be used as using others might throw unicode error. Also double backslash( \\\ ) at the end is neccesary.
-- shuffle ->**True** if you want the songs to be played in random order else **False**
+* [VLC Media Player](https://sourceforge.net/projects/vlc/)
 
-It has 5 method inside it.
-- `pause_multiple()` - Pauses the song. (calling `pause_multiple()` again resumes it)
+## Usage
 
-- `set_volume_multiple(vol)` - Sets the volume of player to vol%. Eg. `set_volume_multiple(60)` sets volume to 60%
+1. ### class File
+   You can initiate the File class with the path of the media file as argument.
+   ```python
+    File("path/to/the/media/file")
+    ```
+    
+    * #### start() 
+    ##### This method starts the playback
+    args = None, return = string
 
-- `next_multiple()` - Plays next song in the list
+    * #### pause(status) 
+    ##### This method pauses/resumes the playback
+    args = [status: boolean], return = string
 
-- `previous_multiple` - Plays previous song in the list
+    * #### mute(status) 
+    ##### This method mutes/unmutes the playback
+    args = [status: boolean], return = string
 
-- `stop_multiple()` - Stops playing . Only it should be called to stop playing. Using other techniques might stop playing but not stop the thread
+    * #### set_volume(vol) 
+    ##### This method set the volume of the playback
+    args = [vol: int], defaults = [vol: 100], return = string
 
-Example Usage:-
-```python
-from playmedia import *
+    * #### stop() 
+    ##### This method stops the playback
+    args = None, return = None
 
-play_multiple("C:\\Users\\Satvik\\Music\\", False)
-#started playing
-pause_multiple()
-#pauses the current song
-pause_multiple()
-#calling  pause_multiple() again resumes the current song
-next_multiple()
-#plays next song in the list
-previous_multiple()
-#plays previous song in the list
-set_volume_multiple(60)
-#sets volume to 60%
-stop_multiple()
-#stops playing the songs
-```
+    * #### meta(tag) 
+    ##### This method returns the meta data of the media
+    args = [tag: string], defaults = [tag: "Date"], return = string
 
-------------
+    * #### edit_meta(tag, new_value) 
+    ##### This method changes the meta data values
+    args = [tag: string, new_value: string], return = string
 
-## 🤝Contributing
+    Supported tags = Actors, Album, AlbumArtist, Artist, ArtworkURL, Copyright, Date, Description, Director, DiscNumber, DiscTotal, EncodedBy, Episode, Genre, Language, NowPlaying, Publisher, Rating, Season, Setting, ShowName, Title, TrackID, TrackNumber, TrackTotal, URL
+
+    ```python
+    instance = File("path/of/the/media/file/Why do I?.mp3")
+    instance.start() # Returns Now playing Why do I?
+    instance.pause(True) # Returns Paused
+    instance.mute(False) # Returns Unmuted
+    instance.set_volume(75) # Returns Volume set to 75%
+    instance.meta("Artist") # Returns Artist: Unknown Brain
+    instance.edit_meta("Album","playmedia") # Changed Album to playmedia
+    instance.stop()
+    ```
+
+    > Note: Statements are returned not printed. To print the returned values use `print(instance.set_volume(75))`
+    * #### stop() 
+    args = None, return = None
+2. ### class Files
+   You can initiate the File class with either the path of the dirctory containing files or list with paths of the media files.
+   ```python
+    Files("path/to/the/dirctory/containing/media/file")
+    or
+    Files(["path/to/media/file/1", "path/to/media/file/2"])
+    ```
+
+    * #### get_list() 
+    ##### This method returns a dictionary with index as keys and files as values 
+    args = None, return = dictionary
+
+    * #### start() 
+    ##### This method starts the playback in order
+    args = None, return = dictionary
+
+    * #### play_at_index(index) 
+    ##### This method starts the playback of the media file at the given index
+    args = [index: int], return = string
+
+    * #### pause(status) 
+    ##### This method pauses/resumes the playback
+    args = [status: boolean], return = string
+
+    * #### next() 
+    ##### This method skips the current media and plays the next one
+    args = None, return = string
+
+    * #### previous() 
+    ##### This method plays the previous media
+    args = None, return = string
+
+    * #### mute(status) 
+    ##### This method mutes/unmutes the playback
+    args = [status: boolean], return = string
+
+    * #### set_volume(vol) 
+    ##### This method set the volume of the playback
+    args = [vol: int], defaults = [vol: 100], return = string
+
+    * #### stop() 
+    ##### This method stops the playback
+    args = None, return = None
+
+    * #### current_meta(tag) 
+    ##### This method returns the meta data of the currently playing media
+    args = [tag: string], defaults = [tag: "Date"], return = string
+
+    > Note: A media should be playing when this method is called. Either call start(), play_at_index(index) before otherwise it raises a IndexError.
+
+    Supported tags = Actors, Album, AlbumArtist, Artist, ArtworkURL, Copyright, Date, Description, Director, DiscNumber, DiscTotal, EncodedBy, Episode, Genre, Language, NowPlaying, Publisher, Rating, Season, Setting, ShowName, Title, TrackID, TrackNumber, TrackTotal, URL
+
+    * #### current_time() 
+    args = None, return = dictionary
+
+    ```python
+    instance = File("path/to/the/dirctory/containing/media/file")
+    instance.get_list() # Returns {0: 'File 1.mp3', 1: 'File 2 .mp4', 2: 'File 3.wav'}
+    instance.start() # Returns {0: 'File 1.mp3', 1: 'File 2 .mp4', 2: 'File 3.wav'}
+    instance.stop()
+    instance.play_at_index(1) # Returns Now playing File 2
+    instance.pause(True) # Returns Paused
+    instance.mute(False) # Returns Unmuted
+    instance.set_volume(75) # Returns Volume set to 75%
+    instance.current_meta("Artist") # Returns Artist: "Artist of File 2"
+    instance.current_time("Album","playmedia") # Returns {"Current time": '98.63s'}
+    ```
+    
+    > Note: Statements are returned not printed. To print the returned values use `print(instance.set_volume(75))`
+
+
+#### Supported Files
+1. '.m4a'
+2. '.flac'
+3. '.mp3'
+4. '.mp4'
+5. '.wav'
+6. '.wma'
+7. '.aac'
+8. '.mkv'
+
+## Author
+
+### Satvik Virmani
+
+<a href="https://twitter.com/satvikvirmani">
+    <img src="https://img.shields.io/twitter/follow/satvikvirmani?color=000000&logo=twitter&logoColor=FFFFFF&style=for-the-badge">
+</a>
+
+## Contributions
+
 Contributions, issues and feature requests are welcome!
-Feel free to check [Bug Tracker](https://github.com/SatvikVirmani/playmedia/issues "issues") page.
-To submit improvements or features check [Pull Requests](https://github.com/SatvikVirmani/playmedia/pulls "Pull Requests")
+Feel free to check [issues](https://github.com/satvikvirmani/playmedia/issues) page.
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
